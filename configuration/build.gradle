@@ -1,0 +1,41 @@
+plugins {
+    id 'groovy'
+    id 'application'
+    id 'org.springframework.boot'
+}
+
+dependencies {
+
+    implementation project(':common')
+    implementation project(':application')
+    implementation project(':persistence-adapter')
+    implementation project(':api-adapter')
+    implementation project(':client-adapter')
+    implementation project(':event-adapter')
+
+    compileOnly('org.springframework.boot:spring-boot-starter-undertow')
+    compileOnly('org.springframework.boot:spring-boot-starter-actuator')
+    runtimeOnly('org.springframework.boot:spring-boot-devtools')
+}
+
+dependencyManagement {
+        imports {
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Main-Class': 'br.com.demo.Application'
+        )
+    }
+    archivesBaseName = 'ghost-rider-demo-app'
+}
+
+application {
+    mainClassName = 'br.com.demo.Application'
+}
+
+bootJar { enabled = true}

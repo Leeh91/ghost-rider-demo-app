@@ -1,0 +1,95 @@
+plugins {
+    id 'groovy'
+    id 'org.springframework.boot' version '3.2.4' apply false
+    id "io.spring.dependency-management" version "1.1.4"
+}
+
+allprojects {
+
+    buildscript {
+        ext {
+            springBootVersion = '3.2.4'
+        }
+        repositories {
+            jcenter()
+            mavenCentral()
+            maven {
+                url 'https://plugins.gradle.org/m2/'
+            }
+        }
+    }
+    
+    version '1.0.0'
+
+    apply plugin: 'groovy'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    sourceSets {
+        integTest {
+            groovy.srcDir "$projectDir/src/integTest/groovy"
+            resources.srcDir "$projectDir/src/integTest/resources"
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+        }
+    }
+
+    configurations {
+        integTestImplementation.extendsFrom testImplementation
+        integTestTestCompile.extendsFrom testCompile
+        integTestTestRuntime.extendsFrom testRuntime
+    }
+
+    dependencies {
+        implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+        implementation 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+        testRuntime 'org.apache.groovy:groovy-all:4.0.21'
+        testImplementation 'org.spockframework:spock-core:2.4-M4-groovy-4.0'
+        testImplementation "org.testcontainers:spock:1.19.7"
+        testImplementation 'net.bytebuddy:byte-buddy:1.14.14'
+        testImplementation 'org.objenesis:objenesis:3.3'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+        }
+    }
+
+
+    task integTests(type: Test) {
+        useJUnitPlatform()
+        testClassesDirs = sourceSets.integTest.output.classesDirs
+        classpath = sourceSets.integTest.runtimeClasspath
+    }
+
+    check.dependsOn integTests
+}
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+    archivesBaseName = 'ghost-rider-demo-app'
+}
+
+springBoot {
+    mainClass = 'br.com.demo.Application'
+}
+
+dependencies {
+    compileOnly project(':configuration')
+}

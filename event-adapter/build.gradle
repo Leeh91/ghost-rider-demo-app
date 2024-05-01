@@ -1,0 +1,14 @@
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+
+    implementation project(':application')
+    implementation project(':common')
+}
+
+jar {
+    archivesBaseName = "${project.name}"
+    enabled = true
+}
+
+bootJar { enabled = false}

@@ -1,0 +1,17 @@
+plugins {
+    id 'groovy'
+}
+
+dependencies {
+    implementation project(':common')
+}
+
+jar {
+    archivesBaseName = "${project.name}"
+    enabled = true
+}
+
+bootJar { enabled = false}
+repositories {
+    mavenCentral()
+}

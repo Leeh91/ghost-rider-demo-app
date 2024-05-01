@@ -1,0 +1,15 @@
+apply plugin: 'io.spring.dependency-management'
+
+dependencies {
+    implementation project(':common')
+    implementation project(':application')
+
+    testCompileOnly project(':application').sourceSets.test.output
+}
+
+jar {
+    archivesBaseName = "${project.name}"
+    enabled = true
+}
+
+bootJar { enabled = false}

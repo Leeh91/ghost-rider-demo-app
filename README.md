@@ -1,2 +1,10 @@
 # ghost-rider-demo-app
-Demo Ride Application
+TBD
+
+## Specs
+TBD
+
+## Development Configuration
+TBD
+
+
