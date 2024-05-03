@@ -72,7 +72,7 @@ class DriverAccountTest extends Specification {
         scenario     | email            | message
         'is null'    | null             | 'Campo email obrigatório'
         'is empty'   | ''               | 'Campo email obrigatório'
-        'is blank'   | ' '              | 'Campo email inválido'
+        'is blank'   | ' '              | 'Campo email obrigatório'
         'is invalid' | 'leandro.com.br' | 'Campo email inválido'
     }
 
